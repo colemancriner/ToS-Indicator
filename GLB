@@ -1,0 +1,31 @@
+# Find the All Time High
+
+# tomorrow and tomorrow2 and tomorrow3 variables
+def tomorrow = high[-1];
+def tomorrow2 = high[-2];
+def tomorrow3 = high[-3];
+
+# conditions
+def con1 = high > tomorrow;
+def con2 = high > tomorrow2;
+def con3 = high > tomorrow3;
+
+# alltimehigh variable
+def alltimehigh = if con1 is true and con2 is true and con3 is true and high>alltimehigh[1] then high else alltimehigh[1];
+
+plot alltimehighLine = alltimehigh;
+
+# highest record
+def recordHigh = if recordHigh[1]<high then high else recordHigh[1];
+input RecordHigh_Greater_Than_AllTimeHigh_Marker = yes;
+plot arrowcondition = if RecordHigh_Greater_Than_AllTimeHigh_Marker then recordHigh>alltimehigh else 0;
+
+arrowcondition.SetPaintingStrategy(PaintingStrategy.BOOLEAN_ARROW_UP);
+
+# opportunity to buy
+input close_away_from_GLB_as_percent = 0.10;
+input Percent_Away_From_GLB_Marker = yes;
+plot pointmarkers = if Percent_Away_From_GLB_Marker then close>alltimehigh and close<(alltimehigh + (alltimehigh*close_away_from_GLB_as_percent)) else 0;
+
+pointmarkers.SetPaintingStrategy(PaintingStrategy.BOOLEAN_ARROW_DOWN);
+
