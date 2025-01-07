@@ -1,0 +1,25 @@
+# Find the All Time High
+
+# tomorrow and tomorrow2 and tomorrow3 variables
+def tomorrow = high[-1];
+def tomorrow2 = high[-2];
+def tomorrow3 = high[-3];
+
+# conditions
+def con1 = high > tomorrow;
+def con2 = high > tomorrow2;
+def con3 = high > tomorrow3;
+
+# alltimehigh variable
+def alltimehigh = if con1 is true and con2 is true and con3 is true and high>alltimehigh[1] then high else alltimehigh[1];
+
+def alltimehighLine = alltimehigh;
+
+# highest record
+def recordHigh = if recordHigh[1]<high then high else recordHigh[1];
+def arrowcondition = recordHigh>alltimehigh;
+
+# opportunity to buy
+def percentaway = (close - alltimehigh)/alltimehigh;
+AddLabel(1, aspercent(percentaway),if percentaway > 0.00000000 then color.GREEN else if percentaway < 0.0000000 then color.RED else color.gray);
+
