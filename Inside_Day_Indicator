@@ -1,0 +1,11 @@
+plot inside_day = if (high < high[1]) and (low > low[1]) then 1 else 0;
+inside_day.SetPaintingStrategy(PaintingStrategy.BOOLEAN_ARROW_UP);
+
+def middle_candle = (high[1] - low[1])/2
+def top_con = (high < high[1]) and (low > middle_candle)
+def bottom_con = (low > low[1]) and (high < middle_candle)
+plot inside_upper = if top_con then 1 else 0;
+plot inside_lower = if bottom_con then 1 else 0;
+
+inside_upper.SetPaintingStrategy(PaintingStrategy.BOOLEAN_ARROW_UP);
+inside_lower.SetPaintingStrategy(PaintingStrategy.BOOLEAN_ARROW_DOWN);
