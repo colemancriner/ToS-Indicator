@@ -71,7 +71,7 @@ plot valLine = if val then val else 0;
 def tickerVal = if beginTickerVal != Double.NaN then (endTickerVal - beginTickerVal) / beginTickerVal else Double.NaN;
 plot tickerValLine = if tickerVal then tickerVal else 0;
 
-plot comparison = if tickerVal and val then tickerVal - val else 0
+plot comparison = if tickerVal and val then tickerVal - val else 0;
 
 
 
