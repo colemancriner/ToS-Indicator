@@ -49,6 +49,7 @@ case CLOSE:
 
 input endDiffType = {default CLOSE, OPEN, HIGH, LOW};
 def endVal;
+def endTickerVal;
 switch (endDiffType) {
 case OPEN:
     endVal = endOpen;
