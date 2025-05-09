@@ -1,0 +1,76 @@
+# Relative Strength of a stock between two user inputed days compared to a specified ticker
+
+# ticker to compare against
+input ticker = "SPY";
+
+@Date
+input beginDate = 20250218;
+@Date
+input endDate = 20250505;
+
+# Assign the beginning date's OHLC
+def beginOpen = if GetYYYYMMDD() == beginDate then open else beginOpen[1];
+def beginHigh = if GetYYYYMMDD() == beginDate then high else beginHigh[1];
+def beginLow = if GetYYYYMMDD() == beginDate then low else beginLow[1];
+def beginClose = if GetYYYYMMDD() == beginDate then close else beginClose[1];
+def beginTickerOpen = if GetYYYYMMDD() == beginDate then open(ticker) else beginTickerOpen[1];
+def beginTickerHigh = if GetYYYYMMDD() == beginDate then high(ticker) else beginTickerHigh[1];
+def beginTickerLow = if GetYYYYMMDD() == beginDate then low(ticker) else beginTickerLow[1];
+def beginTickerClose = if GetYYYYMMDD() == beginDate then close(ticker) else beginTickerClose[1];
+
+# Assgin the end date's OHLC
+def endOpen = if GetYYYYMMDD() == endDate then open else endOpen[1];
+def endHigh = if GetYYYYMMDD() == endDate then high else endHigh[1];
+def endLow = if GetYYYYMMDD() == endDate then low else endLow[1];
+def endClose = if GetYYYYMMDD() == endDate then close else endClose[1];
+def endTickerOpen = if GetYYYYMMDD() == endDate then open(ticker) else endTickerOpen[1];
+def endTickerHigh = if GetYYYYMMDD() == endDate then high(ticker) else endTickerHigh[1];
+def endTickerLow = if GetYYYYMMDD() == endDate then low(ticker) else endTickerLow[1];
+def endTickerClose = if GetYYYYMMDD() == endDate then close(ticker) else endTickerClose[1];
+
+# User's OHLC preference
+input beginDiffType = {default HIGH, OPEN, LOW, CLOSE};
+def beginVal;
+def beginTickerVal;
+switch (beginDiffType) {
+case OPEN:
+    beginVal = beginOpen;
+    beginTickerVal = beginTickerOpen;
+case HIGH:
+    beginVal = beginHigh;
+    beginTickerVal = beginTickerHigh;
+case LOW:
+    beginVal = beginLow;
+    beginTickerVal = beginTickerLow;
+case CLOSE:
+    beginVal = beginClose;
+    beginTickerVal = beginTickerClose;
+}
+
+input endDiffType = {default CLOSE, OPEN, HIGH, LOW};
+def endVal;
+switch (endDiffType) {
+case OPEN:
+    endVal = endOpen;
+    endTickerVal = endTickerOpen;
+case HIGH:
+    endVal = endHigh;
+    endTickerVal = endTickerHigh;
+case LOW:
+    endVal = endLow;
+    endTickerVal = endTickerLow;
+case CLOSE:
+    endVal = endClose;
+    endTickerVal = endTickerClose;
+}
+
+# Calculate the percent change compared to percent change of comparison ticker
+def val = if beginVal != Double.NaN then (endVal - beginVal) / beginVal else Double.NaN;
+plot valLine = if val then val else 0;
+def tickerVal = if beginTickerVal != Double.NaN then (endTickerVal - beginTickerVal) / beginTickerVal else Double.NaN;
+plot tickerValLine = if tickerVal then tickerVal else 0;
+
+plot comparison = if tickerVal and val then tickerVal - val else 0
+
+
+
